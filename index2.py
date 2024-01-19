@@ -16,7 +16,7 @@ class Transaction:
 
 class Block:
     def __init__(self, previous_hash, transactions):
-        self.timestamp = date.datetime.now()
+        self.timestamp = str(date.datetime.now())
         self.transactions = transactions
         self.previous_hash = previous_hash
         self.merkle_root = self.calculate_merkle_root()
@@ -65,10 +65,11 @@ if __name__ == "__main__":
     transaction2 = Transaction("Bob", "Charlie", 5)
     transaction3 = Transaction("Vatsal", "Om", 10)
     transaction4 = Transaction("Om", "Vatsal", 5)
-    transactions = [transaction1, transaction2, transaction3, transaction4]
+    transactions_block1 = [transaction1, transaction2]
+    transactions_block2 = [transaction3, transaction4]
 
     # Create a genesis block with a random previous hash
-    genesis_block = Block("0", transactions)
+    genesis_block = Block("0", transactions_block1)
     genesis_block.mine_block(2)
 
     # Create a new block with the hash of the genesis block as the previous hash
@@ -76,9 +77,16 @@ if __name__ == "__main__":
     new_block = Block(genesis_block.hash, new_transactions)
     new_block.mine_block(2)
 
+    new_block2 = Block(new_block.hash, transactions_block2)
+    new_block2.mine_block(2)
+
     # Display blocks
     print("Genesis Block:")
     print(genesis_block.to_dict())
 
-    print("\nNew Block:")
+    print("\nNew Block 1:")
     print(new_block.to_dict())
+
+    
+    print("\nNew Block 2:")
+    print(new_block2.to_dict())
